@@ -1,3 +1,4 @@
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using PasswordStorage.Data;
 
@@ -9,6 +10,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("postgresql")
     ?? throw new InvalidOperationException("Connection string 'postgresql' not found.")));
+
+builder.Services.AddScoped<IDAL, DAL>();
 
 var app = builder.Build();
 

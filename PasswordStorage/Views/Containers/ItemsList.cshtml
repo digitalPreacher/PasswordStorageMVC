@@ -1,0 +1,43 @@
+﻿@model IEnumerable<PasswordStorage.Models.ContainerItem>
+
+@{
+    ViewData["Title"] = "CreateItem";
+}
+
+<h1>Список ячеек</h1>
+
+<a asp-action="CreateItem" asp-route-id="@ViewBag.ContainerId">Добавить запись</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LoginName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+     <tbody>
+@foreach (var item in Model)
+{    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoginName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Password)
+        </td>
+    </tr>
+}
+    </tbody>
+
+</table>
+

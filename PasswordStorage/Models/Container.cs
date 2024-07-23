@@ -18,7 +18,20 @@ namespace PasswordStorage.Models
         public ICollection<ContainerItem> Items { get; set; } = new List<ContainerItem>();  
 
         [DataType(DataType.Date)]
-        public DateTimeOffset CreateAt { get; set; } = DateTimeOffset.Now;
+        public DateTimeOffset CreateAt { get; set; }
 
+        public Container(IFormCollection form)
+        {
+            Title = form["Title"].ToString();  
+            Description = form["Description"].ToString();
+            CreateAt = DateTimeOffset.Now.ToUniversalTime();
+        }
+
+        public void AddContainerItem(ContainerItem item)
+        {
+            Items.Add(item);
+        }
+
+        public Container() { }  
     }
 }
