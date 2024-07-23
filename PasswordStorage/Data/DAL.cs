@@ -12,9 +12,7 @@ namespace PasswordStorage.Data
         public Task<Container> GetContainer(int containerId);
 
         public void CreateContainer(IFormCollection form);
-
-        public void CreateContainerItem(int containerId, IFormCollection form);
-
+        public void CreateContainerItem(Container container, ContainerItem containerItem);
 
     }
 
@@ -45,21 +43,17 @@ namespace PasswordStorage.Data
             return await _db.Containers.FirstOrDefaultAsync(x => x.Id == containerId);
         }
 
-            public void CreateContainer(IFormCollection form)
+        public void CreateContainer(IFormCollection form)
         {
             var newContainer = new Container(form);
             _db.Containers.Add(newContainer);
             _db.SaveChanges();
         }
 
-        public void CreateContainerItem(int containerId, IFormCollection form)
+        public void CreateContainerItem(Container container, ContainerItem containerItem)
         {
-           var item = new ContainerItem(containerId, form);
-           _db.Items.Add(item);
-           _db.SaveChanges();
+            container.AddContainerItem(containerItem);
+            _db.SaveChanges();
         }
-
-
-
     }
 }
