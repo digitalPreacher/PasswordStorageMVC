@@ -9,6 +9,7 @@
 <p>
     <a asp-action="Create">Добавить хранилище</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
@@ -38,6 +39,31 @@
             </td>
             <td>
                 <a asp-action="ItemsList" asp-route-id="@item.Id">Просмотреть</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a>
+                    <!-- Button trigger modal -->
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#containerModal">
+                    Удалить
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="containerModal" tabindex="-1" aria-labelledby="containerModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="containerModalLabel">Удаление контейнера</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Отмена"></button>
+                            </div>
+                            <div class="modal-body">
+                                Вы действительно хотите сделать это? 
+                            </div>
+                            <div class="modal-footer">
+                                <form asp-action="Delete" asp-route-id="@item.Id" method="post">
+                                    <button type="submit" class="btn btn-danger">Удалить</button>
+                                </form>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </td>
         </tr>
 }
