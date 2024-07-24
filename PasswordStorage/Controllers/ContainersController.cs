@@ -94,6 +94,46 @@ namespace PasswordStorage.Controllers
 
             return RedirectToAction("Index");
         }
+
+        // GET: Containers/Edit/{id}
+        public async Task<IActionResult> Edit(int id)
+        {
+            if(id == null)
+            { 
+                return NotFound(); 
+            }
+
+            var container = await _dal.GetContainer(id);
+            return View(container);
+        }
+
+        // POST: Containers/Edit/{id}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(IFormCollection form)
+        {
+            if (ModelState.IsValid) 
+            {
+                _dal.UpdateContainer(form);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        //POST: Containers/Delte/{id}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id == null)
+            { 
+                return NotFound();
+            }
+
+            _dal.DeleteContainer(id);
+
+            return RedirectToAction("Index");
+        }
     }
 }
 

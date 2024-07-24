@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PasswordStorage.Models;
 using System.Diagnostics.CodeAnalysis;
 
@@ -12,6 +13,10 @@ namespace PasswordStorage.Data
         public Task<Container> GetContainer(int containerId);
 
         public void CreateContainer(IFormCollection form);
+
+        public void UpdateContainer(IFormCollection form);
+
+        public void DeleteContainer(int containerId);
         public void CreateContainerItem(Container container, ContainerItem containerItem);
 
     }
@@ -50,10 +55,28 @@ namespace PasswordStorage.Data
             _db.SaveChanges();
         }
 
+        public void UpdateContainer( IFormCollection form)
+        {
+            var container = _db.Containers.FirstOrDefault(x => x.Id == int.Parse(form["Id"]));
+            container.UpdateContainer(form);
+            _db.SaveChanges();
+        }
+
         public void CreateContainerItem(Container container, ContainerItem containerItem)
         {
             container.AddContainerItem(containerItem);
             _db.SaveChanges();
         }
+
+        public void DeleteContainer(int containerId) 
+        {
+            var container = _db.Containers.Where(x => x.Id == containerId);
+            var containerItems = container.SelectMany(x => x.Items.Select(x => x.Id));
+            var deleteItems = _db.Items.Where(item => containerItems.Contains(item.Id));
+            _db.Containers.RemoveRange(container);
+            _db.Items.RemoveRange(deleteItems);
+            _db.SaveChanges();
+        }
+
     }
 }

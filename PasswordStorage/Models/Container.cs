@@ -27,6 +27,13 @@ namespace PasswordStorage.Models
             CreateAt = DateTimeOffset.Now.ToUniversalTime();
         }
 
+        public void UpdateContainer(IFormCollection form)
+        {
+            Title = form["Title"].ToString();
+            Description = form["Description"].ToString(); 
+            CreateAt = DateTimeOffset.Now.ToUniversalTime();
+        }
+
         public void AddContainerItem(ContainerItem item)
         {
             Items.Add(item);
