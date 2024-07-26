@@ -1,17 +1,20 @@
 ﻿@model PasswordStorage.Models.ContainerItem
 
 @{
-    ViewData["Title"] = "CreateItem";
+    ViewData["Title"] = "EditItem";
 }
 
-<h1>CreateItem</h1>
+<h1>EditItem</h1>
 
-<h4>Container</h4>
+<h4>Item</h4>
+<h4>@ViewBag.ContainerId</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="CreateItem" method="post">
+        <form asp-action="EditItem" asp-route-containerId="@ViewBag.ContainerId" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <a type="hidden" name="containerId" value="@ViewBag.ContainerId"></a>
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
@@ -35,7 +38,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="ItemsList" asp-route-id="@ViewBag.ContainerId">Back to List</a>
 </div>
 
 @section Scripts {

@@ -35,6 +35,33 @@
         <td>
             @Html.DisplayFor(modelItem => item.Password)
         </td>
+        <td>
+            <a asp-action="EditItem" asp-route-id="@item.Id" asp-route-containerId="@ViewBag.ContainerId">Редактировать</a>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#containerItemModal">
+                Удалить
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="containerItemModal" tabindex="-1" aria-labelledby="containerItemModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="containerItemModalLabel">Удаление контейнера</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Отмена"></button>
+                        </div>
+                        <div class="modal-body">
+                            Вы действительно хотите сделать это?
+                        </div>
+                        <div class="modal-footer">
+                            <form asp-action="DeleteItem" asp-route-id="@item.Id" asp-route-containerId="@ViewBag.ContainerId" method="post">
+                                <button type="submit" class="btn btn-danger">Удалить</button>
+                            </form>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
     </tr>
 }
     </tbody>

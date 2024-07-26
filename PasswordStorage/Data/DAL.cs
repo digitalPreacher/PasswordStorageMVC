@@ -19,6 +19,10 @@ namespace PasswordStorage.Data
         public void DeleteContainer(int containerId);
         public void CreateContainerItem(Container container, ContainerItem containerItem);
 
+        public void DeleteContainerItem(int itemId);
+        public Task<ContainerItem> GetContainerItem(int itemId);
+        public void UpdateContainerItem(IFormCollection form);
+
     }
 
     public class DAL : IDAL
@@ -61,13 +65,6 @@ namespace PasswordStorage.Data
             container.UpdateContainer(form);
             _db.SaveChanges();
         }
-
-        public void CreateContainerItem(Container container, ContainerItem containerItem)
-        {
-            container.AddContainerItem(containerItem);
-            _db.SaveChanges();
-        }
-
         public void DeleteContainer(int containerId) 
         {
             var container = _db.Containers.Where(x => x.Id == containerId);
@@ -78,5 +75,30 @@ namespace PasswordStorage.Data
             _db.SaveChanges();
         }
 
+        public void CreateContainerItem(Container container, ContainerItem containerItem)
+        {
+            container.AddContainerItem(containerItem);
+            _db.SaveChanges();
+        }
+
+        public Task<ContainerItem> GetContainerItem(int itemId)
+        {
+            return _db.Items.FirstOrDefaultAsync(x => x.Id == itemId);
+        }
+
+        public void DeleteContainerItem(int itemId)
+        {
+            var containerItem = _db.Items.FirstOrDefault(x => x.Id == itemId);
+            _db.Items.Remove(containerItem);
+            _db.SaveChanges();
+        }
+
+
+        public void UpdateContainerItem(IFormCollection form)
+        {
+            var item = _db.Items.FirstOrDefault(x => x.Id == int.Parse(form["Id"]));
+            item.UpdateContainerItem(form);
+            _db.SaveChanges();
+        }
     }
 }

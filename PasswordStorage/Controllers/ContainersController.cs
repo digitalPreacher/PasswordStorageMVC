@@ -120,7 +120,7 @@ namespace PasswordStorage.Controllers
             return RedirectToAction("Index");
         }
 
-        //POST: Containers/Delte/{id}
+        //POST: Containers/Delete/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -130,9 +130,56 @@ namespace PasswordStorage.Controllers
                 return NotFound();
             }
 
-            _dal.DeleteContainer(id);
+            if (ModelState.IsValid)
+            {
+                _dal.DeleteContainer(id);
+            }
 
             return RedirectToAction("Index");
+        }
+
+        // GET: /Containers/EditItem/{id}?containerId={id}
+        public async Task<IActionResult> EditItem(int id, int containerId)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.ContainerId = containerId;
+
+            var containerItem = await _dal.GetContainerItem(id);
+
+            return View(containerItem);
+        }
+
+        // POST: /Containers/EditItem/{id}?containerId={id}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditItem(int containerId, IFormCollection form)
+        {
+
+            if (ModelState.IsValid)
+            {
+                _dal.UpdateContainerItem(form);
+                return RedirectToAction("ItemsList", new { id = containerId });   
+            }
+
+            return View();
+
+        }
+
+        // POST: /Containers/Delete/{id}?containerId={id}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteItem(int id, int containerId)
+        {
+            if (ModelState.IsValid) 
+            {
+                _dal.DeleteContainerItem(id);
+            }
+
+            return RedirectToAction("ItemsList", new { id = containerId });
         }
     }
 }

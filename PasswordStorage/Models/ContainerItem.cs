@@ -20,5 +20,12 @@ namespace PasswordStorage.Models
         [Required]
         public string Password { get; set; } = string.Empty;
 
+        public void UpdateContainerItem(IFormCollection form)
+        {
+            Title = form["Title"].ToString();
+            LoginName = form["LoginName"].ToString();
+            Password = form["Password"].ToString(); 
+        }
+
     }
 }
