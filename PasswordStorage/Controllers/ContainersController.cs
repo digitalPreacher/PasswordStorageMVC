@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,19 +14,24 @@ using PasswordStorage.Models;
 
 namespace PasswordStorage.Controllers
 {
+    [Authorize]
     public class ContainersController : Controller
     {
         private readonly IDAL _dal;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ContainersController(IDAL dal)
+        public ContainersController(IDAL dal,
+            UserManager<ApplicationUser> userManager)
         {
             _dal = dal;
+            _userManager = userManager;
         }
 
         // GET: Containers
         public async Task<IActionResult> Index()
         {
-            return View(await _dal.GetContainers());
+            var user = await _userManager.GetUserAsync(User);
+            return View(await _dal.GetContainers(user.Id));
         }
 
 
@@ -41,7 +48,8 @@ namespace PasswordStorage.Controllers
         {
             if (ModelState.IsValid)
             {
-                _dal.CreateContainer(form);
+                var user = await _userManager.GetUserAsync(User);
+                _dal.CreateContainer(form, user);
                 return RedirectToAction("Index");
             }
 
@@ -114,7 +122,8 @@ namespace PasswordStorage.Controllers
         {
             if (ModelState.IsValid) 
             {
-                _dal.UpdateContainer(form);
+                var user = await _userManager.GetUserAsync(User);
+                _dal.UpdateContainer(form, user);
             }
 
             return RedirectToAction("Index");
