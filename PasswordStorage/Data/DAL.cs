@@ -27,6 +27,8 @@ namespace PasswordStorage.Data
 
         public Task<IdentityResult> UserSignUpAsync(SignUpModel signUpModel);
 
+        public Task<ApplicationUser> GetUserByEmailAsync(string email);
+
 
     }
 
@@ -123,8 +125,7 @@ namespace PasswordStorage.Data
             var user = new ApplicationUser
             {
                 LoginName = signUpModel.LoginName,
-                //Address = string.Empty,
-                //SecretWord = string.Empty,
+                SecretWord = signUpModel.SecretWord,
                 CreateAt = DateTime.Now.ToUniversalTime(),
                 Email = signUpModel.Email,
                 UserName = signUpModel.LoginName
@@ -133,6 +134,11 @@ namespace PasswordStorage.Data
             var result = await _userManager.CreateAsync(user, signUpModel.Password);
 
             return result;
+        }
+
+        public async Task<ApplicationUser> GetUserByEmailAsync(string email)
+        {
+            return await _userManager.FindByEmailAsync(email);
         }
     }
 }
