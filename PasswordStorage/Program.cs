@@ -1,4 +1,4 @@
-using Microsoft.Data.SqlClient;
+ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using PasswordStorage.Data;
 using Microsoft.AspNetCore.Identity;
@@ -14,8 +14,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("postgresql")
     ?? throw new InvalidOperationException("Connection string 'postgresql' not found.")));
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options => options.SignIn.RequireConfirmedEmail = false)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options => {
+    options.SignIn.RequireConfirmedEmail = false; 
+    options.User.RequireUniqueEmail = true; })
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromHours(3));
 
 builder.Services.AddScoped<IDAL, DAL>();
 

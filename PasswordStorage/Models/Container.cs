@@ -8,11 +8,11 @@ namespace PasswordStorage.Models
         public int Id { get; set; }
 
         [Display(Name = "Название")]
-        [Required(ErrorMessage = "Поле является обязательным"), MaxLength(31)]
+        [Required(ErrorMessage = "Поле обязательно для заполнения")]
         public string Title { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Поле обязательно для заполнения")]
         [Display(Name = "Описание")]
-        [MaxLength(31)]
         public string Description { get; set; } = string.Empty;
 
         public ICollection<ContainerItem> Items { get; set; } = new List<ContainerItem>();  

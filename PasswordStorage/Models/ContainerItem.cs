@@ -8,16 +8,16 @@ namespace PasswordStorage.Models
         [Key]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Поле обязательно для заполнения")]
         [Display(Name = "Название")]
-        [Required]
         public string Title { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Поле обязательно для заполнения")]
         [Display(Name = "Имя пользователя")]
-        [Required]
         public string LoginName { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Поле обязательно для заполнения")]
         [Display(Name = "Пароль")]
-        [Required]
         public string Password { get; set; } = string.Empty;
 
         public void UpdateContainerItem(IFormCollection form)
