@@ -4,41 +4,37 @@
     ViewData["Title"] = "EditItem";
 }
 
-<h1>EditItem</h1>
-
-<h4>Item</h4>
-<h4>@ViewBag.ContainerId</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="EditItem" asp-route-containerId="@ViewBag.ContainerId" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <a type="hidden" name="containerId" value="@ViewBag.ContainerId"></a>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LoginName" class="control-label"></label>
-                <input asp-for="LoginName" class="form-control" />
-                <span asp-validation-for="LoginName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 mx-auto border border-5 rounded-3 text-center p-3">
+            <h1>Ячейка</h1>
+            <hr />
+            <form asp-action="EditItem" asp-route-containerId="@ViewBag.ContainerId" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <a type="hidden" name="containerId" value="@ViewBag.ContainerId"></a>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group col-lg-10 mx-auto">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-10 mx-auto">
+                    <label asp-for="LoginName" class="control-label"></label>
+                    <input asp-for="LoginName" class="form-control" />
+                    <span asp-validation-for="LoginName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-10 mx-auto">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group d-inline-flex col-md-10">
+                    <input type="submit" value="Сохранить" class="w-50 btn btn-primary mt-2 " />
+                    <a asp-action="ItemsList" asp-route-id="@ViewBag.ContainerId" class="w-50 btn btn-danger mt-2 ms-2">Отменить</a>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="ItemsList" asp-route-id="@ViewBag.ContainerId">Back to List</a>
 </div>
 
 @section Scripts {

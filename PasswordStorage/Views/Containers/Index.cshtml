@@ -4,11 +4,12 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 class="text-center">Мои хранилища</h1>
 
 <p>
-    <a asp-action="Create">Добавить хранилище</a>
+    <a asp-action="Create" class="btn btn-primary">Добавить</a>
 </p>
+
 
 <table class="table">
     <thead>
@@ -28,18 +29,18 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            <td class="limit-text col-lg-3">
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
-            <td>
+            <td class="limit-text col-lg-3">
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreateAt)
             </td>
             <td>
-                <a asp-action="ItemsList" asp-route-id="@item.Id">Просмотреть</a>
-                <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a>
+                <a asp-action="ItemsList" asp-route-id="@item.Id" class="btn btn-primary">Просмотреть</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Редактировать</a>
                     <!-- Button trigger modal -->
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#containerModal">
                     Удалить
@@ -49,10 +50,10 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="containerModalLabel">Удаление контейнера</h1>
+                                <h1 class="modal-title fs-5  text-black" id="containerModalLabel">Удаление хранилища</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Отмена"></button>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body text-black">
                                 Вы действительно хотите сделать это? 
                             </div>
                             <div class="modal-footer">
