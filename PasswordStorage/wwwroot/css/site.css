@@ -18,5 +18,28 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    color: #fff;
+    background-image: linear-gradient(to right, #000000, #434343);
+    margin-bottom: 60px;
+}
+
+nav {
+    color: #fff;
+    background-image: linear-gradient(to right, #000000, #434343);
+}
+
+.navbar {
+    color: #fff;
+}
+
+.container .table {
+    color: #fff;
+}
+
+/*limit display text on index and items list pages*/
+.limit-text {
+    white-space: nowrap; /* Prevent wrapping of text */
+    overflow: hidden; /* Hide content that overflows */
+    text-overflow: ellipsis; /* Add ellipsis (...) at the end */
+    max-width: 15px; /* Set the maximum width for the cell content */
 }

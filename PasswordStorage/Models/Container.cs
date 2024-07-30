@@ -18,6 +18,7 @@ namespace PasswordStorage.Models
         public ICollection<ContainerItem> Items { get; set; } = new List<ContainerItem>();  
 
         [DataType(DataType.Date)]
+        [Display(Name = "Дата добавления")]
         public DateTime CreateAt { get; set; }
 
         [DataType(DataType.Date)]

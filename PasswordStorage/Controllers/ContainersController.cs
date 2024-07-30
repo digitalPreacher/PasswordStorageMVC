@@ -83,6 +83,8 @@ namespace PasswordStorage.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateItem(int id, IFormCollection form)
         {
+            ViewBag.ContainerId = id;
+
             if (ModelState.IsValid) {
                 var container = await _dal.GetContainer(id);
                 if (container != null)
