@@ -50,14 +50,14 @@ namespace PasswordStorage.Data
 
         public async Task<List<Container>> GetContainers(int userId)
         {
-            return _db.Containers.Where(x => x.User.Id == userId).ToList();
+            return _db.Containers.OrderByDescending(x => x.Id).Where(x => x.User.Id == userId).ToList();
         }
 
         public async Task<List<ContainerItem>> GetContainerItems(int containerId)
         {
             var container = _db.Containers.Where(x => x.Id == containerId);
             var items = container.SelectMany(x => x.Items.Select(x => x.Id));
-            return _db.Items.Where(x => items.Contains(x.Id)).ToList();
+            return _db.Items.OrderByDescending(x => x.Id).Where(x => items.Contains(x.Id)).ToList();
         }
 
         public async Task<Container> GetContainer(int containerId)

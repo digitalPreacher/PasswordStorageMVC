@@ -7,11 +7,11 @@ namespace PasswordStorage.Models
         [Key]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Поле обязательно для заполнения"), MaxLength(100)]
         [Display(Name = "Название")]
-        [Required(ErrorMessage = "Поле обязательно для заполнения")]
         public string Title { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Поле обязательно для заполнения")]
+        [Required(ErrorMessage = "Поле обязательно для заполнения"), MaxLength(100)]
         [Display(Name = "Описание")]
         public string Description { get; set; } = string.Empty;
 
