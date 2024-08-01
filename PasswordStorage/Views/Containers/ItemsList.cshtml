@@ -33,8 +33,9 @@
                 <td class="limit-text col-lg-4">
                     @Html.DisplayFor(modelItem => item.LoginName)
                 </td>
-                <td class="col-lg-2">
-                    <a asp-action="EditItem" asp-route-id="@item.Id" asp-route-containerId="@ViewBag.ContainerId" class="btn btn-primary">Просмотреть</a>
+                <td class="col-lg-4">
+                    <a asp-action="DetailsItem" asp-route-id="@item.Id" asp-route-containerId="@ViewBag.ContainerId" class="btn btn-primary">Просмотреть</a>
+                    <a asp-action="EditItem" asp-route-id="@item.Id" asp-route-containerId="@ViewBag.ContainerId" class="btn btn-primary">Редактировать</a>
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#containerItemModal">
                         Удалить

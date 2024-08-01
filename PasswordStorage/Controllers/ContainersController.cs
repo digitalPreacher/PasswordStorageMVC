@@ -161,6 +161,9 @@ namespace PasswordStorage.Controllers
 
             var containerItem = await _dal.GetContainerItem(id);
 
+            ViewBag.ContainerItemName = containerItem.Title;
+
+
             return View(containerItem);
         }
 
@@ -191,6 +194,21 @@ namespace PasswordStorage.Controllers
             }
 
             return RedirectToAction("ItemsList", new { id = containerId });
+        }
+
+        // GET: /Containers/DetailsItem/{id}?containerId={id}
+        public async Task<IActionResult> DetailsItem(int id, int containerId)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.ContainerId = containerId;
+
+            var containerItem = await _dal.GetContainerItem(id);
+
+            return View(containerItem);
         }
     }
 }
