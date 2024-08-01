@@ -30,6 +30,7 @@
                     <div class="d-inline-flex col-lg-12">
                         <input asp-for="Password" class="form-control"/>
                         <button class="btn btn-outline-light mx-1" type="button" id="togglePassword"><i class="bi bi-eye"></i></button>
+                        <button class="btn btn-outline-light" type="button" id="btn-generate"><i class="bi bi-arrow-repeat"></i></button>
                     </div>
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
@@ -69,6 +70,30 @@
                         $(this).html('<i class="bi bi-eye"></i>');
                     }
                 });
+            });
+        </script>
+
+
+        <script>
+            $(document).ready(function () {
+
+                $('#btn-generate').click(function () {
+
+                    var string = generateRandomString(10);
+                    $('#Password').val(string);
+                });
+
+                function generateRandomString(length) {
+
+                    var text = "";
+                    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789?/|\}{][&#$%^";
+
+                    for (var i = 0; i < length; i++) {
+                        text += possible.charAt(Math.floor(Math.random() * possible.length));
+                    }
+
+                    return text;
+                }
             });
         </script>
     }
