@@ -57,17 +57,18 @@ namespace PasswordStorage.Controllers
         }
 
         //GET: Containers/ItemsList/{id}
-        public async Task<IActionResult> ItemsList(int id)
+        public async Task<IActionResult> ItemsList(int id, string searchItem)
         {
-            if(id == null)
-            {
-                return NotFound();
-            }
-
             var container = await _dal.GetContainer(id);
             ViewBag.ContainerId = container.Id;
-
             var containerItem = await _dal.GetContainerItems(id);
+
+            if(searchItem != null)
+            {
+                var searchItems = containerItem.Where(x => x.Title.ToUpper().Contains(searchItem.ToUpper())).ToList();
+                ViewBag.SearchItem = searchItem;
+                return View(searchItems);
+            }
 
             return View(containerItem);
         }
@@ -108,11 +109,6 @@ namespace PasswordStorage.Controllers
         // GET: Containers/Edit/{id}
         public async Task<IActionResult> Edit(int id)
         {
-            if(id == null)
-            { 
-                return NotFound(); 
-            }
-
             var container = await _dal.GetContainer(id);
             return View(container);
         }
@@ -210,6 +206,7 @@ namespace PasswordStorage.Controllers
 
             return View(containerItem);
         }
+
     }
 }
 

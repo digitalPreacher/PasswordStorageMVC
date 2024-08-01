@@ -6,9 +6,14 @@
 
 <h1 class="text-center">Список ячеек</h1>
 
+
 <div class="d-inline-flex">
     <a asp-action="CreateItem" asp-route-id="@ViewBag.ContainerId" class="btn btn-primary">Добавить</a>
     <a asp-action="Index" class="btn btn-secondary mx-2">Назад</a>
+    <form class="d-inline-flex" asp-action="ItemsList" asp-route-id="@ViewBag.ContainerId" method="get">
+        <input class="form-control" type="text" name="searchItem" placeholder="Введите название" value="@ViewBag.SearchItem" />
+        <button type="submit" class="btn btn-danger mx-2">Найти</button>
+    </form>
 </div>
 <div class="container">
     <div class="row col-lg-12">

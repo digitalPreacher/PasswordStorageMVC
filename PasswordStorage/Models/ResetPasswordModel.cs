@@ -5,16 +5,16 @@ namespace PasswordStorage.Models
 {
     public class ResetPasswordModel
     {
-        [Required(ErrorMessage = "Поле обязательно для заполнения")]
+        [Required(ErrorMessage = "Поле обязательно для заполнения"), MaxLength(100)]
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Поле обязательно для заполнения")]
+        [Required(ErrorMessage = "Поле обязательно для заполнения"), MaxLength(100)]
         [DataType(DataType.Password)]
         [Display(Name = "Пароль")]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "Поле обязательно для заполнения")]
+        [Required(ErrorMessage = "Поле обязательно для заполнения"), MaxLength(100)]
         [DataType(DataType.Password)]
         [Compare("Password")]
         [Display(Name = "Подтверждение пароля")]
