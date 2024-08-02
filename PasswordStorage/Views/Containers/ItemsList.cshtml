@@ -4,33 +4,38 @@
     ViewData["Title"] = "CreateItem";
 }
 
-<h1 class="text-center">Список ячеек</h1>
+<h1 class="text-center p-3 shadow bg-body-tertiary rounded">Список ячеек</h1>
 
-
-<div class="d-inline-flex">
-    <a asp-action="CreateItem" asp-route-id="@ViewBag.ContainerId" class="btn btn-outline-success"
-           data-bs-toggle="tooltip" data-bs-placement="top"
-           data-bs-custom-class="custom-tooltip"
-           data-bs-title="Добавить">
-       <i class="bi bi-plus-square"></i>
-    </a>
-    <form class="d-inline-flex" asp-action="ItemsList" asp-route-id="@ViewBag.ContainerId" method="get">
-        <input class="form-control mx-2" type="text" name="searchItem" placeholder="Введите название" value="@ViewBag.SearchItem" />
-        <button type="submit" class="btn btn-outline-info"
-                data-bs-toggle="tooltip" data-bs-placement="top"
-                data-bs-custom-class="custom-tooltip"
-                data-bs-title="Найти">
-            <i class="bi bi-search"></i>
-        </button>
-    </form>
-    <a asp-action="Index" class="btn btn-outline-light mx-2"
-           data-bs-toggle="tooltip" data-bs-placement="top"
-           data-bs-custom-class="custom-tooltip"
-           data-bs-title="Назад">
-       <i class="bi bi-arrow-left-square"></i>
-    </a>
-</div>
 <div class="container">
+    <div class="row">
+        <div class="shadow p-2 bg-body-tertiary rounded">
+            <div class="d-inline-flex">
+                <a asp-action="CreateItem" asp-route-id="@ViewBag.ContainerId" class="btn btn-outline-success"
+                        data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-custom-class="custom-tooltip"
+                        data-bs-title="Добавить">
+                    <i class="bi bi-plus-square"></i>
+                </a>
+                <form class="d-inline-flex" asp-action="ItemsList" asp-route-id="@ViewBag.ContainerId" method="get">
+                    <input class="form-control mx-2" type="text" name="searchItem" placeholder="Введите название" value="@ViewBag.SearchItem" />
+                    <button type="submit" class="btn btn-outline-info"
+                            data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-custom-class="custom-tooltip"
+                            data-bs-title="Найти">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </form>
+                <a asp-action="Index" class="btn btn-outline-light mx-2"
+                        data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-custom-class="custom-tooltip"
+                        data-bs-title="Назад">
+                    <i class="bi bi-arrow-left-square"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container shadow bg-body-tertiary rounded">
     <div class="row col-lg-12">
         <table class="table border-secondary text-center align-middle">
             <thead>
@@ -99,8 +104,13 @@
             </tr>
         }
             </tbody>
-
         </table>
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item"><a class="page-link bg-transparent text-white" asp-action="ItemsList" asp-route-id="@ViewBag.ContainerId" asp-route-pageNumber="@i" asp-route-searchItem="@ViewBag.SearchItem">@i</a></li>
+            }
+        </ul>
     </div>
 </div>
 

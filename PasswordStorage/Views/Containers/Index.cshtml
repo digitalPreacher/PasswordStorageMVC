@@ -5,95 +5,104 @@
 }
 
 
-<div>
+<div class="shadow p-3 bg-body-tertiary rounded">
     <h1 class="text-center">Мои хранилища</h1>
 </div>
 
 
-<p>
+<div class="shadow p-2 bg-body-tertiary rounded">
     <a asp-action="Create" class="btn btn-outline-success"
            data-bs-toggle="tooltip" data-bs-placement="top"
            data-bs-custom-class="custom-tooltip"
            data-bs-title="Добавить">
         <i class="bi bi-plus-square"></i>
     </a>
-</p>
+</div>
 
-
-<table class="table border-secondary text-center align-middle">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreateAt)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td class="limit-text col-lg-3">
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td class="limit-text col-lg-3">
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateAt)
-            </td>
-            <td>
-                <a asp-action="ItemsList" asp-route-id="@item.Id" class="btn btn-outline-primary"
-                       data-bs-toggle="tooltip" data-bs-placement="top"
-                       data-bs-custom-class="custom-tooltip"
-                       data-bs-title="Просмотреть">
-                    <i class="bi bi-eye"></i>
-                </a>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-info"
-                        data-bs-toggle="tooltip" data-bs-placement="top"
-                        data-bs-custom-class="custom-tooltip"
-                        data-bs-title="Редактировать">
-                    <i class="bi bi-pencil-square"></i>
-                </a>
-                <!-- Button trigger modal -->
-                <span data-bs-toggle="modal" data-bs-target="#containerModal">
-                    <button type="button" class="btn btn-outline-danger"
-                            data-bs-toggle="tooltip" data-bs-placement="top"
-                            data-bs-custom-class="custom-tooltip"
-                            data-bs-title="Удалить">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </span>
-                <!-- Modal -->
-                <div class="modal fade" id="containerModal" tabindex="-1" aria-labelledby="containerModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5  text-black" id="containerModalLabel">Удаление хранилища</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Отмена"></button>
-                            </div>
-                            <div class="modal-body text-black">
-                                Вы действительно хотите сделать это? 
-                            </div>
-                            <div class="modal-footer">
-                                <form asp-action="Delete" asp-route-id="@item.Id" method="post">
-                                    <button type="submit" class="btn btn-danger">Удалить</button>
-                                </form>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+<div class="container shadow bg-body-tertiary rounded">
+    <div class="row">
+        <table class="table border-secondary text-center align-middle">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreateAt)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+        @foreach (var item in Model) {
+                <tr>
+                    <td class="limit-text col-lg-3">
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td class="limit-text col-lg-3">
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreateAt)
+                    </td>
+                    <td>
+                        <a asp-action="ItemsList" asp-route-id="@item.Id" class="btn btn-outline-primary"
+                               data-bs-toggle="tooltip" data-bs-placement="top"
+                               data-bs-custom-class="custom-tooltip"
+                               data-bs-title="Просмотреть">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-info"
+                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                data-bs-custom-class="custom-tooltip"
+                                data-bs-title="Редактировать">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <!-- Button trigger modal -->
+                        <span data-bs-toggle="modal" data-bs-target="#containerModal">
+                            <button type="button" class="btn btn-outline-danger"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    data-bs-custom-class="custom-tooltip"
+                                    data-bs-title="Удалить">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </span>
+                        <!-- Modal -->
+                        <div class="modal fade" id="containerModal" tabindex="-1" aria-labelledby="containerModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5  text-black" id="containerModalLabel">Удаление хранилища</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Отмена"></button>
+                                    </div>
+                                    <div class="modal-body text-black">
+                                        Вы действительно хотите сделать это? 
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form asp-action="Delete" asp-route-id="@item.Id" method="post">
+                                            <button type="submit" class="btn btn-danger">Удалить</button>
+                                        </form>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                    </td>
+                </tr>
+        }
+            </tbody>
+        </table>
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item"><a class="page-link bg-transparent text-white" asp-action="Index" asp-route-pageNumber="@i">@i</a></li>
+            }
+        </ul>
+    </div>
+</div>
 
 @section Scripts {
     @{
@@ -103,6 +112,5 @@
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
             const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
         </script>
-
     }
 }

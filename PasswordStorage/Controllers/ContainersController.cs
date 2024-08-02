@@ -27,11 +27,23 @@ namespace PasswordStorage.Controllers
             _userManager = userManager;
         }
 
-        // GET: Containers
-        public async Task<IActionResult> Index()
+        // GET: Containers?pageNumber={id}
+        public async Task<IActionResult> Index(int? pageNumber)
         {
+            var pageSize = 2;
+            var currentPage = pageNumber ?? 1;
             var user = await _userManager.GetUserAsync(User);
-            return View(await _dal.GetContainers(user.Id));
+
+            if (user != null)
+            {
+                var containers = await _dal.GetContainers(user.Id);
+                var totalPages = (int)Math.Ceiling(containers.Count() / (double)pageSize);
+                ViewBag.TotalPages = totalPages;
+                var currentContainers = containers.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+                return View(currentContainers);
+            }
+
+            return View();
         }
 
 
@@ -57,20 +69,31 @@ namespace PasswordStorage.Controllers
         }
 
         //GET: Containers/ItemsList/{id}
-        public async Task<IActionResult> ItemsList(int id, string searchItem)
+        public async Task<IActionResult> ItemsList(int id, int? pageNumber, string? searchItem)
         {
+            var pageSize = 2;
+            var currentPage = pageNumber ?? 1;
+
             var container = await _dal.GetContainer(id);
+
             ViewBag.ContainerId = container.Id;
             var containerItem = await _dal.GetContainerItems(id);
+            
+            ViewBag.TotalPages = (int)Math.Ceiling(containerItem.Count()/(double)pageSize);
+            var currentItems = containerItem.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
 
-            if(searchItem != null)
+
+            if (searchItem != null)
             {
                 var searchItems = containerItem.Where(x => x.Title.ToUpper().Contains(searchItem.ToUpper())).ToList();
+                ViewBag.TotalPages = (int)Math.Ceiling(searchItems.Count() / (double)pageSize);
                 ViewBag.SearchItem = searchItem;
-                return View(searchItems);
+                var currentSearchItems = searchItems.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+
+                return View(currentSearchItems);
             }
 
-            return View(containerItem);
+            return View(currentItems);
         }
 
         // GET: Containers/ItemList/CreateItem/{id}
