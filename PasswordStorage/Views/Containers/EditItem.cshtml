@@ -15,12 +15,17 @@
                 <input type="hidden" asp-for="Id" />
                 <div class="form-group col-lg-10 mx-auto">
                     <label asp-for="Title" class="control-label"></label>
-                    <input asp-for="Title" class="form-control" />
+                    <input asp-for="Title" class="form-control" placeholder="Введите название" />
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
                 <div class="form-group col-lg-10 mx-auto">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" placeholder="Введите примечание" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-10 mx-auto">
                     <label asp-for="LoginName" class="control-label"></label>
-                    <input asp-for="LoginName" class="form-control" />
+                    <input asp-for="LoginName" class="form-control" placeholder="Введите имя пользователя" />
                     <span asp-validation-for="LoginName" class="text-danger"></span>
                 </div>
                 <div class="form-group col-lg-10 mx-auto">
@@ -28,7 +33,7 @@
                         <label asp-for="Password" class="control-label"></label>
                     </div>
                     <div class="d-inline-flex col-lg-12">
-                        <input asp-for="Password" class="form-control"/>
+                        <input asp-for="Password" class="form-control" placeholder="Введите пароль" />
                         <button class="btn btn-outline-light mx-1" type="button" id="togglePassword"><i class="bi bi-eye"></i></button>
                         <button class="btn btn-outline-light" type="button" id="btn-generate"><i class="bi bi-arrow-repeat"></i></button>
                     </div>

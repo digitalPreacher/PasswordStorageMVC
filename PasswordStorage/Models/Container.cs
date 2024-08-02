@@ -11,9 +11,9 @@ namespace PasswordStorage.Models
         [Display(Name = "Название")]
         public string Title { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Поле обязательно для заполнения"), MaxLength(100)]
-        [Display(Name = "Описание")]
-        public string Description { get; set; } = string.Empty;
+        [MaxLength(100)]
+        [Display(Name = "Причечание")]
+        public string? Description { get; set; } = string.Empty;
 
         public ICollection<ContainerItem> Items { get; set; } = new List<ContainerItem>();  
 
