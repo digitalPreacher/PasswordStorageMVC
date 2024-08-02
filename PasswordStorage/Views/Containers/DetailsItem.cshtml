@@ -13,12 +13,25 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group col-lg-10 mx-auto">
                     <label asp-for="Title" class="control-label"></label>
-                    <input asp-for="Title" class="form-control" disabled/>
+                    <input asp-for="Title" class="form-control" readonly/>
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
                 <div class="form-group col-lg-10 mx-auto">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" readonly/>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-10 mx-auto">
                     <label asp-for="LoginName" class="control-label"></label>
-                    <input asp-for="LoginName" class="form-control" disabled/>
+                    <div class="d-inline-flex col-lg-12">
+                        <input asp-for="LoginName" class="form-control" readonly/>
+                        <button type="button" class="btn btn-outline-light mx-1" id="copy-login-btn"
+                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                data-bs-custom-class="custom-tooltip"
+                                data-bs-title="Копировать">
+                            <i class="bi bi-copy"></i>
+                        </button>
+                    </div>
                     <span asp-validation-for="LoginName" class="text-danger"></span>
                 </div>
                 <div class="form-group col-lg-10 mx-auto">
@@ -26,13 +39,24 @@
                         <label asp-for="Password" class="control-label"></label>
                     </div>
                     <div class="d-inline-flex col-lg-12">
-                        <input asp-for="Password" class="form-control" disabled/>
-                        <button class="btn btn-outline-light mx-1" type="button" id="togglePassword"><i class="bi bi-eye"></i></button>
+                        <input asp-for="Password" class="form-control" readonly/>
+                        <button class="btn btn-outline-light mx-1" type="button" id="togglePassword"
+                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                data-bs-custom-class="custom-tooltip"
+                                data-bs-title="Показать/скрыть">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-light mx-1" id="copy-password-btn"
+                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                data-bs-custom-class="custom-tooltip"
+                                data-bs-title="Копировать">
+                            <i class="bi bi-copy"></i>
+                        </button>
                     </div>
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-group col-lg-10 mx-auto">
-                    <a asp-action="ItemsList" asp-route-id="@ViewBag.ContainerId" class="w-100 btn btn-danger mt-2">Назад</a>
+                    <a asp-action="ItemsList" asp-route-id="@ViewBag.ContainerId" class="w-100 btn btn-primary mt-2">Назад</a>
                 </div>
             </form>
         </div>
@@ -43,30 +67,51 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
 
-        <script>
-            $(document).ready(function () {
-                function setPasswordFieldType() {
-                    $('#Password').attr('type', 'password');
-                }
-                setPasswordFieldType();
-            });
-        </script>
+                <script>
+                    $(document).ready(function () {
+                        function setPasswordFieldType() {
+                            $('#Password').attr('type', 'password');
+                        }
+                        setPasswordFieldType();
+                    });
+                </script>
 
-        <script>
-            $(document).ready(function () {
-                $('#togglePassword').click(function () {
-                    var passwordField = $('#Password');
-                    var passwordFieldType = passwordField.attr('type');
+                <script>
+                    $(document).ready(function () {
+                        $('#togglePassword').click(function () {
+                            var passwordField = $('#Password');
+                            var passwordFieldType = passwordField.attr('type');
 
-                    if (passwordFieldType == 'password') {
-                        passwordField.attr('type', 'text');
-                        $(this).html('<i class="bi bi-eye-slash"></i>');
-                    } else {
-                        passwordField.attr('type', 'password');
-                        $(this).html('<i class="bi bi-eye"></i>');
-                    }
-                });
-            });
-        </script>
+                            if (passwordFieldType == 'password') {
+                                passwordField.attr('type', 'text');
+                                $(this).html('<i class="bi bi-eye-slash"></i>');
+                            } else {
+                                passwordField.attr('type', 'password');
+                                $(this).html('<i class="bi bi-eye"></i>');
+                            }
+                        });
+                    });
+                </script>
+
+                <script>
+                    $(document).ready(function () {
+                        $('#copy-login-btn').click(function () {
+                            var copyText = $('#LoginName');
+                            copyText.select();
+                            document.execCommand('Copy');
+                        });
+
+                        $('#copy-password-btn').click(function () {
+                            var copyText = $('#Password');
+                            copyText.select();
+                            document.execCommand('Copy');
+                        });
+                    });                 
+                </script>
+
+                <script>
+                    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+                    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+                </script>
     }
 }

@@ -4,14 +4,23 @@
     ViewData["Title"] = "Index";
 }
 
-<h1 class="text-center">Мои хранилища</h1>
+
+<div>
+    <h1 class="text-center">Мои хранилища</h1>
+</div>
+
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Добавить</a>
+    <a asp-action="Create" class="btn btn-outline-success"
+           data-bs-toggle="tooltip" data-bs-placement="top"
+           data-bs-custom-class="custom-tooltip"
+           data-bs-title="Добавить">
+        <i class="bi bi-plus-square"></i>
+    </a>
 </p>
 
 
-<table class="table">
+<table class="table border-secondary text-center align-middle">
     <thead>
         <tr>
             <th>
@@ -39,12 +48,27 @@
                 @Html.DisplayFor(modelItem => item.CreateAt)
             </td>
             <td>
-                <a asp-action="ItemsList" asp-route-id="@item.Id" class="btn btn-primary">Просмотреть</a>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Редактировать</a>
-                    <!-- Button trigger modal -->
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#containerModal">
-                    Удалить
-                </button>
+                <a asp-action="ItemsList" asp-route-id="@item.Id" class="btn btn-outline-primary"
+                       data-bs-toggle="tooltip" data-bs-placement="top"
+                       data-bs-custom-class="custom-tooltip"
+                       data-bs-title="Просмотреть">
+                    <i class="bi bi-eye"></i>
+                </a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-info"
+                        data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-custom-class="custom-tooltip"
+                        data-bs-title="Редактировать">
+                    <i class="bi bi-pencil-square"></i>
+                </a>
+                <!-- Button trigger modal -->
+                <span data-bs-toggle="modal" data-bs-target="#containerModal">
+                    <button type="button" class="btn btn-outline-danger"
+                            data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-custom-class="custom-tooltip"
+                            data-bs-title="Удалить">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </span>
                 <!-- Modal -->
                 <div class="modal fade" id="containerModal" tabindex="-1" aria-labelledby="containerModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -70,3 +94,15 @@
 }
     </tbody>
 </table>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+        <script>
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+        </script>
+
+    }
+}

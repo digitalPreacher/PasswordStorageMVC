@@ -74,8 +74,9 @@ namespace PasswordStorage.Controllers
         }
 
         // GET: Containers/ItemList/CreateItem/{id}
-        public IActionResult CreateItem()
+        public IActionResult CreateItem(int id)
         {
+            ViewBag.ContainerId = id;
             return View();
         }
 
@@ -93,6 +94,7 @@ namespace PasswordStorage.Controllers
                     var containerItem = new ContainerItem
                     {
                         Title = form["Title"].ToString(),
+                        Description = form["Description"].ToString(),
                         LoginName = form["LoginName"].ToString(),
                         Password = form["Password"].ToString()
                     };

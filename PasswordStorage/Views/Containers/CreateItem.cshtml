@@ -13,29 +13,32 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group col-lg-10 mx-auto">
                     <label asp-for="Title" class="control-label"></label>
-                    <input asp-for="Title" class="form-control" />
+                    <input asp-for="Title" class="form-control" placeholder="Введите название"/>
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
                 <div class="form-group col-lg-10 mx-auto">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" placeholder="Введите примечание"/>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-10 mx-auto">
                     <label asp-for="LoginName" class="control-label"></label>
-                    <input asp-for="LoginName" class="form-control" />
+                    <input asp-for="LoginName" class="form-control" placeholder="Введите имя пользователя"/>
                     <span asp-validation-for="LoginName" class="text-danger"></span>
                 </div>
                 <div class="form-group col-lg-10 mx-auto">
                     <label asp-for="Password" class="control-label"></label>
                     <div class="d-inline-flex col-lg-12">
-                        <input asp-for="Password" class="form-control" />
+                        <input asp-for="Password" class="form-control" placeholder="Введите пароль"/>
                         <button class="btn btn-outline-light mx-2" type="button" id="btn-generate"><i class="bi bi-arrow-repeat"></i></button>
                     </div>
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
-                <div class="form-group col-lg-10 mx-auto">
-                    <input type="submit" value="Добавить" class="w-100 btn btn-primary mt-2" />
+                <div class="form-group d-inline-flex col-lg-10">
+                    <input type="submit" value="Добавить" class="w-50 btn btn-primary mt-2" />
+                    <a asp-action="ItemsList" asp-route-id="@ViewBag.ContainerId" class="w-50 btn btn-danger mt-2 ms-2">Отменить</a>
                 </div>
             </form>
-            <div class="col-lg-10 mx-auto">
-                <button onclick="window.history.back()" class="w-100 btn mt-2 btn-danger"><i class="bi bi-reply"></i>Отменить</button>
-            </div>
         </div>
     </div>
 </div>
