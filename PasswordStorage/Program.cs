@@ -4,6 +4,7 @@ using PasswordStorage.Data;
 using Microsoft.AspNetCore.Identity;
 using PasswordStorage.Models;
 using Microsoft.Extensions.DependencyInjection;
+using PasswordStorage.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +19,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options => {
     options.SignIn.RequireConfirmedEmail = false; 
     options.User.RequireUniqueEmail = true; })
     .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders()
+    .AddErrorDescriber<CustomIdentityErrorDescriber>();
 
 builder.Services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromHours(3));
 
