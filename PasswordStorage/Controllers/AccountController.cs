@@ -156,5 +156,11 @@ namespace PasswordStorage.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public IActionResult AboutApplication()
+        {
+            return View();
+        }
+
     }
 }
