@@ -45,6 +45,7 @@
         </nav>
     </header>
     }
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -53,9 +54,9 @@
 
     @if (SignInManager.IsSignedIn(User))
     {
-        <footer class="footer text-muted shadow-lg p-2 bg-body-tertiary rounded">
+        <footer class="footer text-muted shadow-lg p-2 bg-body-tertiary rounded fixed-bottom">
             <div class="container">
-            &copy; 2024 - <a asp-area="" asp-controller="Containers" asp-action="Index">PasswordStorage</a>
+                &copy; 2024 - <a asp-area="" asp-controller="Containers" asp-action="Index">PasswordStorage</a>
         </div>
         </footer>
     }

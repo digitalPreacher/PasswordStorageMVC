@@ -30,7 +30,7 @@ namespace PasswordStorage.Controllers
         // GET: Containers?pageNumber={id}
         public async Task<IActionResult> Index(int? pageNumber)
         {
-            var pageSize = 2;
+            var pageSize = 10;
             var currentPage = pageNumber ?? 1;
             var user = await _userManager.GetUserAsync(User);
 
@@ -71,7 +71,7 @@ namespace PasswordStorage.Controllers
         //GET: Containers/ItemsList/{id}
         public async Task<IActionResult> ItemsList(int id, int? pageNumber, string? searchItem)
         {
-            var pageSize = 2;
+            var pageSize = 10;
             var currentPage = pageNumber ?? 1;
 
             var container = await _dal.GetContainer(id);

@@ -5,7 +5,7 @@ namespace PasswordStorage.Models
     public class SignUpModel
     {
         [Required(ErrorMessage = "Поле обязательно для заполнения"), MaxLength(100)]
-        [EmailAddress(ErrorMessage = "ВВедите корректный почтовый адрес")]
+        [EmailAddress(ErrorMessage = "Введи почту в правильном формате: user@example.ru")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
