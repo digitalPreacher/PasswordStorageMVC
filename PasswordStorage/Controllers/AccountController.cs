@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using PasswordStorage.Data;
+using PasswordStorage.Helpers;
 using PasswordStorage.Models;
+using System.Diagnostics;
 
 namespace PasswordStorage.Controllers
 {
@@ -102,15 +105,29 @@ namespace PasswordStorage.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordModel model)
         {
+            var user = await _dal.GetUserByEmailAsync(model.Email);
+
             if (ModelState.IsValid)
             {
-                var user = await _dal.GetUserByEmailAsync(model.Email);
-
-                if(user != null && user.SecretWord == model.SecretWord)
+                if(user != null)
                 { 
                     var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-                    return RedirectToAction("ResetPassword", new { code = token, email = model.Email });
+                    var url = $"{Request.Scheme}://{Request.Host.ToUriComponent()}{Url.Action("ResetPassword", "Account", new { code = token, email = user.Email })}";
+
+                    EmailHelper emailHelper = new EmailHelper();
+                    bool emailResponse = emailHelper.SendEmailPasswordReset(user.Email, url);
+
+                    if (emailResponse)
+                    {
+                        return RedirectToAction("ForgotPasswordConfirmation", "Account");
+
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Что-то пошло не так");
+                    }
+
                 }
                 else
                 {
@@ -162,5 +179,11 @@ namespace PasswordStorage.Controllers
             return View();
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
     }
 }
