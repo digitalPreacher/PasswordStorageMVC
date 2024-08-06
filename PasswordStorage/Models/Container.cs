@@ -37,6 +37,7 @@ namespace PasswordStorage.Models
 
         public void UpdateContainer(IFormCollection form, ApplicationUser user)
         {
+            User = user;
             Title = form["Title"].ToString();
             Description = form["Description"].ToString();
             UpdateAt = DateTime.Now.ToUniversalTime();

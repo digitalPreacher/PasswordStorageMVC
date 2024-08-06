@@ -10,19 +10,19 @@ namespace PasswordStorage.Data
     {
         public Task<List<Container>> GetContainers(int userId);
 
-        public Task<List<ContainerItem>> GetContainerItems(int containerId);
-        public Task<Container> GetContainer(int containerId);
+        public Task<List<ContainerItem>> GetContainerItems(int containerId, int userId);
+        public Task<Container> GetContainer(int containerId, int userId);
 
         public void CreateContainer(IFormCollection form, ApplicationUser user);
 
         public void UpdateContainer(IFormCollection form, ApplicationUser user);
 
-        public void DeleteContainer(int containerId);
+        public void DeleteContainer(int containerId, int userId);
         public void CreateContainerItem(Container container, ContainerItem containerItem);
 
-        public void DeleteContainerItem(int itemId);
-        public Task<ContainerItem> GetContainerItem(int itemId);
-        public void UpdateContainerItem(IFormCollection form);
+        public void DeleteContainerItem(int? id, int? containerId, int userId);
+        public Task<ContainerItem> GetContainerItem(int id, int containerId, int userId);
+        public void UpdateContainerItem(IFormCollection form, int? containerId, int userId);
         public Task<SignInResult> UserLoginAsync(SignInModel signInModel);
 
         public Task<IdentityResult> UserSignUpAsync(SignUpModel signUpModel);
@@ -53,16 +53,16 @@ namespace PasswordStorage.Data
             return _db.Containers.OrderByDescending(x => x.Id).Where(x => x.User.Id == userId).ToList();
         }
 
-        public async Task<List<ContainerItem>> GetContainerItems(int containerId)
+        public async Task<List<ContainerItem>> GetContainerItems(int containerId, int userId)
         {
-            var container = _db.Containers.Where(x => x.Id == containerId);
+            var container = _db.Containers.Where(x => x.Id == containerId && x.User.Id == userId);
             var items = container.SelectMany(x => x.Items.Select(x => x.Id));
             return _db.Items.OrderByDescending(x => x.Id).Where(x => items.Contains(x.Id)).ToList();
         }
 
-        public async Task<Container> GetContainer(int containerId)
+        public async Task<Container> GetContainer(int containerId, int userId)
         {
-            return await _db.Containers.FirstOrDefaultAsync(x => x.Id == containerId);
+            return await _db.Containers.FirstOrDefaultAsync(x => x.Id == containerId && x.User.Id == userId);
         }
 
         public void CreateContainer(IFormCollection form, ApplicationUser user)
@@ -79,9 +79,9 @@ namespace PasswordStorage.Data
             container.UpdateContainer(form, user);
             _db.SaveChanges();
         }
-        public void DeleteContainer(int containerId) 
+        public void DeleteContainer(int containerId, int userId) 
         {
-            var container = _db.Containers.Where(x => x.Id == containerId);
+            var container = _db.Containers.Where(x => x.Id == containerId && x.User.Id == userId);
             var containerItems = container.SelectMany(x => x.Items.Select(x => x.Id));
             var deleteItems = _db.Items.Where(item => containerItems.Contains(item.Id));
             _db.Containers.RemoveRange(container);
@@ -95,22 +95,35 @@ namespace PasswordStorage.Data
             _db.SaveChanges();
         }
 
-        public Task<ContainerItem> GetContainerItem(int itemId)
+        public async Task<ContainerItem> GetContainerItem(int id, int containerId, int userId)
         {
-            return _db.Items.FirstOrDefaultAsync(x => x.Id == itemId);
+            var container = _db.Containers.Include(x => x.Items).FirstOrDefault(x => x.Id == containerId && x.User.Id == userId);
+            if (container == null)
+            {
+                return null;
+            }
+            else
+            {
+                var containerItem = container.Items.FirstOrDefault(x => x.Id == id);
+
+                return containerItem;
+            }
         }
 
-        public void DeleteContainerItem(int itemId)
+        public void DeleteContainerItem(int? id, int? containerId, int userId)
         {
-            var containerItem = _db.Items.FirstOrDefault(x => x.Id == itemId);
+            var container = _db.Containers.Include(x => x.Items).FirstOrDefault(x => x.Id == containerId && x.User.Id == userId);
+            var containerItem = container.Items.FirstOrDefault(x => x.Id == id);
             _db.Items.Remove(containerItem);
             _db.SaveChanges();
         }
 
 
-        public void UpdateContainerItem(IFormCollection form)
+        public void UpdateContainerItem(IFormCollection form, int? containerId, int userId)
         {
-            var item = _db.Items.FirstOrDefault(x => x.Id == int.Parse(form["Id"]));
+            var itemId = int.Parse(form["Id"]);
+            var container = _db.Containers.Include(x => x.Items).FirstOrDefault(x => x.Id == containerId && x.User.Id == userId);
+            var item = container.Items.FirstOrDefault(x => x.Id == itemId);
             item.UpdateContainerItem(form);
             _db.SaveChanges();
         }
