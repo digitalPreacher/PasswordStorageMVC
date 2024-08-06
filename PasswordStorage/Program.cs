@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using PasswordStorage.Models;
 using Microsoft.Extensions.DependencyInjection;
 using PasswordStorage.Helpers;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,9 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options => option
 
 builder.Services.AddScoped<IDAL, DAL>();
 
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -36,8 +40,11 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseSerilogRequestLogging();
+
+app.UseHttpsRedirection();
 
 app.UseRouting();
 
