@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol;
 using PasswordStorage.Data;
 using PasswordStorage.Models;
 
@@ -32,14 +33,21 @@ namespace PasswordStorage.Controllers
         {
             var pageSize = 10;
             var currentPage = pageNumber ?? 1;
-            var user = await _userManager.GetUserAsync(User);
 
-            if (user != null)
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
             {
-                var containers = await _dal.GetContainers(user.Id);
+                return BadRequest();
+            }
+
+            var containers = await _dal.GetContainers(user.Id);
+            if (containers != null)
+            {
                 var totalPages = (int)Math.Ceiling(containers.Count() / (double)pageSize);
-                ViewBag.TotalPages = totalPages;
                 var currentContainers = containers.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+
+                ViewBag.TotalPages = totalPages;
+
                 return View(currentContainers);
             }
 
@@ -61,7 +69,13 @@ namespace PasswordStorage.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return BadRequest();
+                }
+
                 _dal.CreateContainer(form, user);
+
                 return RedirectToAction("Index");
             }
 
@@ -71,15 +85,32 @@ namespace PasswordStorage.Controllers
         //GET: Containers/ItemsList/{id}
         public async Task<IActionResult> ItemsList(int id, int? pageNumber, string? searchItem)
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
             var pageSize = 10;
             var currentPage = pageNumber ?? 1;
 
-            var container = await _dal.GetContainer(id);
+            var container = await _dal.GetContainer(id, user.Id);
+            if (container == null)
+            {
+                return NotFound();
+            }
 
             ViewBag.ContainerId = container.Id;
-            var containerItem = await _dal.GetContainerItems(id);
-            
-            ViewBag.TotalPages = (int)Math.Ceiling(containerItem.Count()/(double)pageSize);
+
+            var containerItem = await _dal.GetContainerItems(id, user.Id);
+
+            if(containerItem == null)
+            {
+                return NotFound();
+            }
+
+
+            ViewBag.TotalPages = (int)Math.Ceiling(containerItem.Count() / (double)pageSize);
             var currentItems = containerItem.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
 
 
@@ -94,12 +125,14 @@ namespace PasswordStorage.Controllers
             }
 
             return View(currentItems);
+
         }
 
         // GET: Containers/ItemList/CreateItem/{id}
         public IActionResult CreateItem(int id)
         {
             ViewBag.ContainerId = id;
+
             return View();
         }
 
@@ -108,10 +141,16 @@ namespace PasswordStorage.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateItem(int id, IFormCollection form)
         {
-            ViewBag.ContainerId = id;
+            var user = await _userManager.GetUserAsync(User);
 
-            if (ModelState.IsValid) {
-                var container = await _dal.GetContainer(id);
+            if (user == null) 
+            {
+                return BadRequest();
+            }
+
+            if (ModelState.IsValid) 
+            {
+                var container = await _dal.GetContainer(id, user.Id);
                 if (container != null)
                 {
                     var containerItem = new ContainerItem
@@ -122,19 +161,32 @@ namespace PasswordStorage.Controllers
                         Password = form["Password"].ToString()
                     };
 
+                    ViewBag.ContainerId = id;
+
                     _dal.CreateContainerItem(container, containerItem);
 
                     return RedirectToAction("ItemsList", new { id = id });
-                } 
+                }
             }
 
-            return RedirectToAction("Index");
+            return BadRequest();
         }
 
         // GET: Containers/Edit/{id}
         public async Task<IActionResult> Edit(int id)
         {
-            var container = await _dal.GetContainer(id);
+            var user = await _userManager.GetUserAsync(User);
+            if(user == null)
+            {
+                return BadRequest();
+            }
+
+            var container = await _dal.GetContainer(id, user.Id);
+            if (container == null)
+            {
+                return NotFound();
+            }
+
             return View(container);
         }
 
@@ -143,13 +195,21 @@ namespace PasswordStorage.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(IFormCollection form)
         {
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
-                _dal.UpdateContainer(form, user);
+                if (user == null)
+                {
+                    return BadRequest();
+                }
+
+                 _dal.UpdateContainer(form, user);
+
+                return RedirectToAction("Index");
             }
 
-            return RedirectToAction("Index");
+            return BadRequest();
+
         }
 
         //POST: Containers/Delete/{id}
@@ -157,33 +217,41 @@ namespace PasswordStorage.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            { 
-                return NotFound();
+            var user = await _userManager.GetUserAsync(User);
+            if(user == null)
+            {
+                return BadRequest();
             }
 
             if (ModelState.IsValid)
             {
-                _dal.DeleteContainer(id);
+                _dal.DeleteContainer(id, user.Id);
+
+                return RedirectToAction("Index");
             }
 
-            return RedirectToAction("Index");
+            return NotFound();
+
         }
 
         // GET: /Containers/EditItem/{id}?containerId={id}
         public async Task<IActionResult> EditItem(int id, int containerId)
         {
-            if (id == null)
+            var user = await _userManager.GetUserAsync(User);
+            if(user == null)
             {
+                return BadRequest();
+            }
+            
+            var containerItem = await _dal.GetContainerItem(id, containerId, user.Id);
+            if (containerItem == null) 
+            { 
                 return NotFound();
             }
 
             ViewBag.ContainerId = containerId;
 
-            var containerItem = await _dal.GetContainerItem(id);
-
             ViewBag.ContainerItemName = containerItem.Title;
-
 
             return View(containerItem);
         }
@@ -191,13 +259,24 @@ namespace PasswordStorage.Controllers
         // POST: /Containers/EditItem/{id}?containerId={id}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditItem(int containerId, IFormCollection form)
+        public async Task<IActionResult> EditItem(int? containerId, IFormCollection form)
         {
+            var user = await _userManager.GetUserAsync(User);
+            if(user == null)
+            {
+                return BadRequest();
+            }
+
+            if (containerId == null || !int.TryParse(form["Id"], out int itemId))
+            {
+                return NotFound();
+            }
 
             if (ModelState.IsValid)
             {
-                _dal.UpdateContainerItem(form);
-                return RedirectToAction("ItemsList", new { id = containerId });   
+                _dal.UpdateContainerItem(form, containerId, user.Id);
+
+                return RedirectToAction("ItemsList", new { id = containerId });
             }
 
             return View();
@@ -207,29 +286,46 @@ namespace PasswordStorage.Controllers
         // POST: /Containers/Delete/{id}?containerId={id}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteItem(int id, int containerId)
+        public async Task<IActionResult> DeleteItem(int? id, int? containerId)
         {
-            if (ModelState.IsValid) 
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
             {
-                _dal.DeleteContainerItem(id);
+                return BadRequest();
             }
 
-            return RedirectToAction("ItemsList", new { id = containerId });
+            if (id != null && containerId != null)
+            {
+                _dal.DeleteContainerItem(id, containerId, user.Id);
+
+                return RedirectToAction("ItemsList", new { id = containerId });
+            } 
+            else
+            {
+                return NotFound();
+            }
+
         }
 
         // GET: /Containers/DetailsItem/{id}?containerId={id}
         public async Task<IActionResult> DetailsItem(int id, int containerId)
         {
-            if (id == null)
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            { 
+                return BadRequest();
+            }
+
+            var containerItem = await _dal.GetContainerItem(id, containerId, user.Id);
+            if (containerItem == null)
             {
                 return NotFound();
             }
-
+                
             ViewBag.ContainerId = containerId;
 
-            var containerItem = await _dal.GetContainerItem(id);
-
             return View(containerItem);
+
         }
 
     }
