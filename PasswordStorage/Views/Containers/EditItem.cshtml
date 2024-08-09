@@ -54,10 +54,10 @@
 
         <script>
             $(document).ready(function () {
-                function setPasswordFieldType() {
-                    $('#Password').attr('type', 'password');
+                function setPasswordFieldStyle() {
+                    $('#Password').attr('style', '-webkit-text-security: disc');
                 }
-                setPasswordFieldType();
+                setPasswordFieldStyle();
             });
         </script>
 
@@ -65,13 +65,13 @@
             $(document).ready(function () {
                 $('#togglePassword').click(function () {
                     var passwordField = $('#Password');
-                    var passwordFieldType = passwordField.attr('type');
+                    var passwordFieldStyle = passwordField.attr('style');
 
-                    if (passwordFieldType == 'password') {
-                        passwordField.attr('type', 'text');
+                    if (passwordFieldStyle == '-webkit-text-security: disc') {
+                        passwordField.attr('style', 'text');
                         $(this).html('<i class="bi bi-eye-slash"></i>');
                     } else {
-                        passwordField.attr('type', 'password');
+                        passwordField.attr('style', '-webkit-text-security: disc');
                         $(this).html('<i class="bi bi-eye"></i>');
                     }
                 });

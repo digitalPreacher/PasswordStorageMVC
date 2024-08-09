@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  passwordstorage:
+    image: ${DOCKER_REGISTRY-}passwordstorage
+    build:
+      context: .
+      dockerfile: PasswordStorage/Dockerfile
+    environment:
+      - ConnectionStrings__Default=Host=postgresql;Username=postgres;Port=5432;Password=Admin666!;Database= ;Pooling=true;
+    ports:
+      - "80:80"
+      - "443:443"

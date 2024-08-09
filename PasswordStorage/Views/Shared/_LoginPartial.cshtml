@@ -4,25 +4,22 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<ul class="navbar-nav">
+<ul class="dropdown-menu dropdown-menu-dark p-0 bg-secondary">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a id="manage" class="nav-link text-white" asp-area="" title="Manage">@UserManager.GetUserName(User)</a>
-    </li>
-    <li class="nav-item">
+    <li class="dropdown-item">
         <form id="logoutForm" class="form-inline" asp-controller="Account" asp-action="Logout">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-white border-0">Logout</button>
+            <button id="logout" type="submit" class="nav-link btn btn-link text-white p-1">Выйти</button>
         </form>
     </li>
 }
 else
 {
- @*    <li class="nav-item">
-        <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    <li class="dropdown-item">
+        <a class="nav-link text-white" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li> *@
+    <li class="dropdown-item">
+        <a class="nav-link text-white" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
 }
 </ul>

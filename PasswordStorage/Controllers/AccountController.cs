@@ -113,7 +113,7 @@ namespace PasswordStorage.Controllers
                 { 
                     var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-                    var url = $"{Request.Scheme}://{Request.Host.ToUriComponent()}{Url.Action("ResetPassword", "Account", new { code = token, email = user.Email })}";
+                    var url = $"https://password-storage.ru{Url.Action("ResetPassword", "Account", new { code = token, email = user.Email })}";
 
                     EmailHelper emailHelper = new EmailHelper();
                     bool emailResponse = emailHelper.SendEmailPasswordReset(user.Email, url);

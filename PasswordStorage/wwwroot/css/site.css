@@ -43,3 +43,8 @@ nav {
     text-overflow: ellipsis; /* Add ellipsis (...) at the end */
     max-width: 15px; /* Set the maximum width for the cell content */
 }
+
+/*profile dropdown*/
+.dropdown-menu {
+    min-width: 10px;
+}
