@@ -38,8 +38,7 @@ namespace PasswordStorage.Data
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public DAL(ApplicationDbContext db,
-            UserManager<ApplicationUser> userManager, 
+        public DAL(ApplicationDbContext db, UserManager<ApplicationUser> userManager, 
             SignInManager<ApplicationUser> signInManager)
         {
             _db = db;
