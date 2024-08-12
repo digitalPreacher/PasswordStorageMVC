@@ -34,5 +34,37 @@ namespace PasswordStorage.Helpers
 
             return false;
         }
+
+        public bool SendEmailUserFeedback(string userEmail, string description)
+        {
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.From = new MailAddress("feedback@password-storage.ru") ;
+            mailMessage.To.Add(new MailAddress("watcman35@yandex.ru"));
+
+            mailMessage.Subject = $"Сообщение о проблеме";
+            mailMessage.IsBodyHtml = true;
+            mailMessage.Body = $"<p>Описание: {description}<p>" +
+                $"<p>Email: {userEmail}<p>";
+
+            SmtpClient client = new SmtpClient();
+            client.Credentials = new System.Net.NetworkCredential("proninkolian@yandex.ru", "aJKMZ1cwSLT4");
+            client.Host = "connect.smtp.bz";
+            client.EnableSsl = true;
+            client.Port = 2525;
+            client.UseDefaultCredentials = false;
+
+            try
+            {
+                client.Send(mailMessage);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+
+            return false;
+
+        }
     }
 }
