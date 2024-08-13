@@ -19,7 +19,6 @@ namespace PasswordStorage.Controllers
             if (ModelState.IsValid)
             { 
                 EmailHelper emailHelper = new EmailHelper();
-
                 bool emailResponse = emailHelper.SendEmailUserFeedback(email, description);
 
                 return RedirectToAction("FeedbackConfirmation");

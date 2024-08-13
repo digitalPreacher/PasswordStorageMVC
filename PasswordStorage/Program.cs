@@ -1,9 +1,7 @@
- using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using PasswordStorage.Data;
 using Microsoft.AspNetCore.Identity;
 using PasswordStorage.Models;
-using Microsoft.Extensions.DependencyInjection;
 using PasswordStorage.Helpers;
 using Serilog;
 using Microsoft.AspNetCore.HttpOverrides;
