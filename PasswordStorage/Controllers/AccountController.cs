@@ -112,11 +112,12 @@ namespace PasswordStorage.Controllers
                 if(user != null)
                 { 
                     var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-
-                    var url = $"https://password-storage.ru{Url.Action("ResetPassword", "Account", new { code = token, email = user.Email })}";
+                    var domainName = Environment.GetEnvironmentVariable("DOMAIN_NAME");
+                    var url = $"{domainName}{Url.Action("ResetPassword", "Account", new { code = token, email = user.Email })}";
+                    var currentUserEmail = user.Email ?? throw new ArgumentException("Invalid email");
 
                     EmailHelper emailHelper = new EmailHelper();
-                    bool emailResponse = emailHelper.SendEmailPasswordReset(user.Email, url);
+                    bool emailResponse = emailHelper.SendEmailPasswordReset(currentUserEmail, url);
 
                     if (emailResponse)
                     {
@@ -131,15 +132,20 @@ namespace PasswordStorage.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Неверно введены почта или секретное слово");
+                    ModelState.AddModelError("", "Почта не найдена");
                 }
             }
 
             return View(model);
         }
 
-        public IActionResult ResetPassword(string code = null, string email = null)
+        public IActionResult ResetPassword(string code, string email)
         {
+            if (string.IsNullOrEmpty(code) || string.IsNullOrEmpty(email))
+            {
+                return BadRequest();
+            }
+
             var model = new ResetPasswordModel { Code = code, Email = email };
             return View(model);
         }
