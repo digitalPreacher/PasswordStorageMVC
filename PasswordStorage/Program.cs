@@ -7,15 +7,19 @@ using Microsoft.Extensions.DependencyInjection;
 using PasswordStorage.Helpers;
 using Serilog;
 using Microsoft.AspNetCore.HttpOverrides;
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Env.Load("./Environments.env");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("postgresql")
-    ?? throw new InvalidOperationException("Connection string 'postgresql' not found.")));
+    options.UseNpgsql(connectionString ?? throw new InvalidOperationException("Connection string 'postgresql' not found.")));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options => {
     options.SignIn.RequireConfirmedEmail = false; 
@@ -30,6 +34,7 @@ builder.Services.AddScoped<IDAL, DAL>();
 
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
+
 
 var app = builder.Build();
 
