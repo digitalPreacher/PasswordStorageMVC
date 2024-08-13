@@ -7,7 +7,7 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-4 mx-auto border border-5 rounded-3 text-center p-3">
-            <h1>Ячейка</h1>
+            <h3>Редактирование ячейки</h3>
             <hr />
             <form asp-action="EditItem" asp-route-containerId="@ViewBag.ContainerId" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -41,7 +41,7 @@
                 </div>
                 <div class="form-group d-inline-flex col-lg-10">
                     <input type="submit" value="Сохранить" class="w-50 btn btn-primary mt-2 " />
-                    <a asp-action="ItemsList" asp-route-id="@ViewBag.ContainerId" class="w-50 btn btn-danger mt-2 ms-2">Отменить</a>
+                    <a asp-action="ItemsList" asp-route-id="@ViewBag.ContainerId" class="w-50 btn btn-secondary mt-2 ms-2">Отменить</a>
                 </div>
             </form>
         </div>

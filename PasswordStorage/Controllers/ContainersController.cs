@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol;
 using PasswordStorage.Data;
 using PasswordStorage.Models;
 
@@ -21,8 +12,7 @@ namespace PasswordStorage.Controllers
         private readonly IDAL _dal;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ContainersController(IDAL dal,
-            UserManager<ApplicationUser> userManager)
+        public ContainersController(IDAL dal, UserManager<ApplicationUser> userManager)
         {
             _dal = dal;
             _userManager = userManager;
@@ -85,14 +75,14 @@ namespace PasswordStorage.Controllers
         //GET: Containers/ItemsList/{id}
         public async Task<IActionResult> ItemsList(int id, int? pageNumber, string? searchItem)
         {
+            var pageSize = 10;
+            var currentPage = pageNumber ?? 1;
+
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return BadRequest();
             }
-
-            var pageSize = 10;
-            var currentPage = pageNumber ?? 1;
 
             var container = await _dal.GetContainer(id, user.Id);
             if (container == null)
@@ -103,23 +93,21 @@ namespace PasswordStorage.Controllers
             ViewBag.ContainerId = container.Id;
 
             var containerItem = await _dal.GetContainerItems(id, user.Id);
-
             if(containerItem == null)
             {
                 return NotFound();
             }
 
-
             ViewBag.TotalPages = (int)Math.Ceiling(containerItem.Count() / (double)pageSize);
             var currentItems = containerItem.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
-
 
             if (searchItem != null)
             {
                 var searchItems = containerItem.Where(x => x.Title.ToUpper().Contains(searchItem.ToUpper())).ToList();
+                var currentSearchItems = searchItems.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+
                 ViewBag.TotalPages = (int)Math.Ceiling(searchItems.Count() / (double)pageSize);
                 ViewBag.SearchItem = searchItem;
-                var currentSearchItems = searchItems.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
 
                 return View(currentSearchItems);
             }
@@ -142,7 +130,6 @@ namespace PasswordStorage.Controllers
         public async Task<IActionResult> CreateItem(int id, IFormCollection form)
         {
             var user = await _userManager.GetUserAsync(User);
-
             if (user == null) 
             {
                 return BadRequest();
@@ -209,7 +196,6 @@ namespace PasswordStorage.Controllers
             }
 
             return BadRequest();
-
         }
 
         //POST: Containers/Delete/{id}
@@ -231,7 +217,6 @@ namespace PasswordStorage.Controllers
             }
 
             return NotFound();
-
         }
 
         // GET: /Containers/EditItem/{id}?containerId={id}
@@ -325,9 +310,7 @@ namespace PasswordStorage.Controllers
             ViewBag.ContainerId = containerId;
 
             return View(containerItem);
-
         }
-
     }
 }
 

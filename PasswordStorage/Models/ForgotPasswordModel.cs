@@ -7,6 +7,6 @@ namespace PasswordStorage.Models
         [Required(ErrorMessage = "Поле обязательно для заполнения"), MaxLength(100)]
         [EmailAddress(ErrorMessage = "Введи почту в правильном формате: user@example.ru")]
         [Display(Name = "Почта")]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
     }
 }

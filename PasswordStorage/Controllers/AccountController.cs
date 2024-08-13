@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using PasswordStorage.Data;
 using PasswordStorage.Helpers;
 using PasswordStorage.Models;
-using System.Diagnostics;
 
 namespace PasswordStorage.Controllers
 {
@@ -21,17 +17,14 @@ namespace PasswordStorage.Controllers
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager)
         {
-
             _dal = dal;
             _signInManager = signInManager;
             _userManager = userManager;
-
         }
 
         //[Route("SignUp")]
         public IActionResult SignUp()
         {
-
             return View();
         }
 
@@ -72,7 +65,6 @@ namespace PasswordStorage.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _dal.UserLoginAsync(signInModel);
-
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Containers");
@@ -118,7 +110,6 @@ namespace PasswordStorage.Controllers
 
                     EmailHelper emailHelper = new EmailHelper();
                     bool emailResponse = emailHelper.SendEmailPasswordReset(currentUserEmail, url);
-
                     if (emailResponse)
                     {
                         return RedirectToAction("ForgotPasswordConfirmation", "Account");
@@ -128,7 +119,6 @@ namespace PasswordStorage.Controllers
                     {
                         ModelState.AddModelError("", "Что-то пошло не так");
                     }
-
                 }
                 else
                 {

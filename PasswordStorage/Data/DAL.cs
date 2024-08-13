@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-//using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PasswordStorage.Models;
-using System.Diagnostics.CodeAnalysis;
 
 namespace PasswordStorage.Data
 {
